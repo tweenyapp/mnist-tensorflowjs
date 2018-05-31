@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<h2 style="text-align : center">Tensoflowjs MNIST Demo</h2>
+	<h2 style="text-align : center">Tensorflowjs MNIST Demo</h2>
 	<div>
 		<h3 style="text-align : center">Description</h3>
 		<p style="text-align : center">This demo makes use of the popular <a href="https://js.tensorflow.org/">TensorflowJS library</a> to train a <br>Convolutional Neural Network to classify hand-written digit using the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a></p>
@@ -16,6 +16,12 @@
 		<h3 style="text-align : center">Training Process</h3>
 	</div>
 	<canvas id="trainGraph" width="400" height="200"></canvas>
+	<div>
+		<h3 style="text-align : center">Example Predictions</h3>
+		<img src="#" id="mnist">
+		<p id="label"></p>
+		<p id="prediction"></p>
+	</div>
 	<script type="text/javascript" src="mnist_labels.js"></script> 
 	<script type="text/javascript" src="data.js"></script>
 	<script type="text/javascript" src="mnist.js"></script>

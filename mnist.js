@@ -35,20 +35,32 @@ model.compile({
 const BATCH_SIZE = 30;
 const NUM_EPOCHS = 1;
 
-function showPredictions(testImage) {
+async function showPredictions(testArray, testImage) {
 	var labels = [], 
+		inps = [];
 		images = [];
-	for (var i; i<20; i++){
+		// console.log(testArray.length)
+		// console.log(testImage.length)
+	for (var i=0; i<20; i++){
 		randomIndex = Math.floor(Math.random() * 3000);
+		//console.log(randomIndex)
 		labels.push(testLabels[randomIndex]);
-		images.push(testImage.slice(randomIndex*784, (randomIndex+1)*784));
+		inps.push(...testArray.slice(randomIndex*784, (randomIndex+1)*784));
+		images.push(...testImage.data.slice(randomIndex*784*4, (randomIndex+1)*784*4));
 	}
-	const xs = tf.tensor2d(images, [batchSize, IMAGE_SIZE]);
+	//console.log(inps.length)
+	const xs = tf.tensor2d(inps, [20, IMAGE_SIZE]);
 	//const labels = tf.oneHot(tf.tensor1d(mnistLabels.slice(labelIndex,labelIndex+batchSize), dtype='int32'), 10);
-	const output = model.predict(batch.xs.reshape([-1, 28, 28, 1]));
+	const output = model.predict(xs.reshape([-1, 28, 28, 1]));
 	const axis = 1;
 	const predictions = Array.from(output.argMax(axis).dataSync());
 
+	//console.log(predictions.length, labels.length)
+
+	for (var i=0; i<20; i++){
+		//console.log(labels[i], predictions[i])
+		await show(images.slice(i*784*4,(i+1)*784*4), labels[i], predictions[i]);
+	}
 }
 
 function plotGraph(losses) {
@@ -124,10 +136,10 @@ async function train(){
 				const loss = history.history.loss[0];
 				lossVal+=loss;
 				count+=1
-				//showPredictions(testArray)
 			}
 			losses.push(lossVal/count)
 			await plotGraph(losses)
+			await showPredictions(testArray, testImage)
 		}
 	}
 	//console.log(losses)

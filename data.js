@@ -25,13 +25,14 @@ function load(path) {
 	return imgRequest
 }
 
-var show = function(image) {
+var show = function(image, label, prediction) {
 	var width = 28,
 		height = 28
 
 	var canvas = document.createElement('canvas'),
 	ctx = canvas.getContext('2d');
 
+	//console.log(label, prediction)
 	canvas.width = width;
 	canvas.height = height;
 
@@ -46,6 +47,8 @@ var show = function(image) {
 	var dataUri = canvas.toDataURL();
 	var img = document.getElementById("mnist");
 	img.src =  dataUri;
+	document.getElementById('label').innerHTML = label;
+	document.getElementById('prediction').innerHTML = prediction;
 }
 
 function get_batch(batchSize, datasetBytesView, mnistLabels, imageIndex, labelIndex) {
