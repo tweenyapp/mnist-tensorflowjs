@@ -4,24 +4,73 @@
 <head>
 	<title>Training ConvNet on MNIST dataset</title>
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.2"> </script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.min.css" rel="stylesheet">
+	<style>
+		.container {margin: 0 228px;}
+		.alert-dark {text-align: center;
+			    background: darkgrey;
+			    margin: 0 262px;}
+
+		.prediction-canvas{
+			width: 100px;
+		}
+		.pred {
+			font-size: 20px;
+			line-height: 25px;
+			width: 100px;
+		}
+		.pred-correct {
+			background-color: #00cf00;
+		}
+		.pred-incorrect {
+			background-color: red;
+		}
+		.pred-container {
+			display: inline-block;
+			width: 100px;
+			margin: 10px;
+		}
+		.example-pred {
+			margin-left: 347px;
+			margin-right: 228px;
+		}
+	</style>
 </head>
 
 <body>
 	<h2 style="text-align : center">Tensorflowjs MNIST Demo</h2>
-	<div>
+	<div class="alert-dark">
 		<h3 style="text-align : center">Description</h3>
+	</div>
+	<div>
 		<p style="text-align : center">This demo makes use of the popular <a href="https://js.tensorflow.org/">TensorflowJS library</a> to train a <br>Convolutional Neural Network to classify hand-written digit using the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a></p>
 	</div>
-	<div>
-		<h3 style="text-align : center">Training Process</h3>
+	<div class="alert-dark">
+		<h3>Training Process</h3>
 	</div>
-	<canvas id="trainGraph" width="400" height="200"></canvas>
-	<div>
-		<h3 style="text-align : center">Example Predictions</h3>
-		<img src="#" id="mnist">
-		<p id="label"></p>
-		<p id="prediction"></p>
+	<div class="row container">
+	  <!-- Analytics -->
+	  <div class="col-md-6" style="padding: 20px;">
+		<div id="trainstats">
+			Number of epochs: 1<br>
+			Samples per iterations: 30<br>
+			Loss value: <span id='loss'></span><br>
+			Accuracy on test set: <span id='accuracy'></span><br>
+			Examples seen: <span id='example'></span><br>
+		</div>
+          </div>
+	  <!-- Graph plot -->
+	  <div class="col-md-6">
+	    <canvas id="trainGraph" width="400" height="200"></canvas>
+          </div>
 	</div>
+	<div class="alert-dark">
+		<h3>Example Predictions</h3>
+	</div>
+	
+	<div id="images" class="example-pred"></div>
+    </div>
+	
 	<script type="text/javascript" src="mnist_labels.js"></script> 
 	<script type="text/javascript" src="data.js"></script>
 	<script type="text/javascript" src="mnist.js"></script>

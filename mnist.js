@@ -39,28 +39,18 @@ async function showPredictions(testArray, testImage) {
 	var labels = [], 
 		inps = [];
 		images = [];
-		// console.log(testArray.length)
-		// console.log(testImage.length)
 	for (var i=0; i<20; i++){
 		randomIndex = Math.floor(Math.random() * 3000);
-		//console.log(randomIndex)
 		labels.push(testLabels[randomIndex]);
 		inps.push(...testArray.slice(randomIndex*784, (randomIndex+1)*784));
 		images.push(...testImage.data.slice(randomIndex*784*4, (randomIndex+1)*784*4));
 	}
-	//console.log(inps.length)
+
 	const xs = tf.tensor2d(inps, [20, IMAGE_SIZE]);
-	//const labels = tf.oneHot(tf.tensor1d(mnistLabels.slice(labelIndex,labelIndex+batchSize), dtype='int32'), 10);
 	const output = model.predict(xs.reshape([-1, 28, 28, 1]));
 	const axis = 1;
 	const predictions = Array.from(output.argMax(axis).dataSync());
-
-	//console.log(predictions.length, labels.length)
-
-	for (var i=0; i<20; i++){
-		//console.log(labels[i], predictions[i])
-		await show(images.slice(i*784*4,(i+1)*784*4), labels[i], predictions[i]);
-	}
+	await show(images, labels, predictions)
 }
 
 function plotGraph(losses) {
@@ -116,6 +106,7 @@ async function train(){
 		testArray[j] = testImage.data[j * 4] / 255;
 	}
 	var losses = [];
+	var exampleSeen = 0;
 	for (var epochno=0; epochno<NUM_EPOCHS; epochno++){
 		for (var i=0; i<20; i++) {
 			var imageData = await load(trainPath + 'mnist_batch_' + i +'.png');
@@ -137,12 +128,14 @@ async function train(){
 				lossVal+=loss;
 				count+=1
 			}
+			exampleSeen+=3000;
+			document.getElementById('example').innerHTML = exampleSeen
 			losses.push(lossVal/count)
+			document.getElementById('loss').innerHTML = lossVal/count
 			await plotGraph(losses)
 			await showPredictions(testArray, testImage)
 		}
 	}
-	//console.log(losses)
 }
 
 //var losses = [2.215643181800842,1.70023361086845,0.871379427015781,0.493703858852386,0.49132644504308,0.394590208232402,0.3195764508843421,0.2905453762784,0.320307144075632,0.28078611835837364,0.30876618791371585,0.22582871098071336,0.2367681137099862,0.23873020108789206,0.22747866369783878,0.23279226860031485,0.2199552042968571,0.19789801463484763,0.1539139676094055,0.13208426334895193]

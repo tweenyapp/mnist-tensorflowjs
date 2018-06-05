@@ -25,11 +25,45 @@ function load(path) {
 	return imgRequest
 }
 
-var show = function(image, label, prediction) {
+var show = function(images, labels, predictions) {
+	var imagesElement = document.getElementById('images');
+	imagesElement.innerHTML = "";
+	var count_correct = 0;
+	for (var i=0; i<20; i++){
+		var image = images.slice(i*784*4,(i+1)*784*4);
+		var label = labels[i]; 
+		var	prediction = predictions[i];
+	    
+	    var div = document.createElement('div');
+	    div.className = 'pred-container';
+
+		var canvas = document.createElement('canvas');
+    	canvas.className = 'prediction-canvas';
+
+    	draw(image, canvas)
+
+    	var pred = document.createElement('div');
+		pred.className = 'pred pred-incorrect';
+		pred.innerText = 'pred : '+ prediction;
+
+		if (labels[i] === predictions[i]){
+			count_correct+=1;
+			pred.className = 'pred pred-correct';
+		}
+	    
+	    div.appendChild(pred);
+	    div.appendChild(canvas);
+
+    	imagesElement.appendChild(div);
+	}
+	var accuracy = (count_correct*100)/20
+	document.getElementById('accuracy').innerHTML = accuracy
+}
+
+function draw(image, canvas) {
 	var width = 28,
 		height = 28
 
-	var canvas = document.createElement('canvas'),
 	ctx = canvas.getContext('2d');
 
 	//console.log(label, prediction)
@@ -44,11 +78,6 @@ var show = function(image, label, prediction) {
 
 	// update canvas with new data
 	ctx.putImageData(idata, 0, 0);
-	var dataUri = canvas.toDataURL();
-	var img = document.getElementById("mnist");
-	img.src =  dataUri;
-	document.getElementById('label').innerHTML = label;
-	document.getElementById('prediction').innerHTML = prediction;
 }
 
 function get_batch(batchSize, datasetBytesView, mnistLabels, imageIndex, labelIndex) {
