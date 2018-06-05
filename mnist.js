@@ -1,5 +1,5 @@
-var trainPath = 'http://localhost/images/'
-var testPath = 'http://localhost/images/mnist_batch_20.png'
+var trainPath = 'http://mnistdemo.tweeny.in/mnist_data/'
+var testPath = 'http://mnistdemo.tweeny.in/mnist_data/mnist_batch_20.png'
 
 const model = tf.sequential();
 
